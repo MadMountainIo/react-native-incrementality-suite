@@ -17,3 +17,5 @@ export function trackEvent({
     body: JSON.stringify({})
   })
 }
+
+export type IncrementalitySuiteTrackEventParams = TrackEventParams;
