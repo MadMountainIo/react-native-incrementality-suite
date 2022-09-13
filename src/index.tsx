@@ -9,22 +9,13 @@ export function trackEvent({
   multiParamJSON,
   tagName,
   tagValue,
-}: TrackEventParams): Promise<any> {
+}: TrackEventParams): void {
   const url = `https://${dataCenter}.creativecdn.com/tags?type=none&ckt=${cookieType}&ck=${cookie}&id=pr_${hash}_custom_${tagName}_${tagValue}&event_parameters=${multiParamJSON}&v=${appVersion}`
 
-  return new Promise((resolve, reject) => {
-
-    return fetch(url, {
-      method: 'POST',
-      body: JSON.stringify({})
-    })
-    .then(response => {
-      return resolve(response);
-    })
-    .catch(error => {
-      return reject(error);
-    });
-  });
+  fetch(url, {
+    method: 'POST',
+    body: JSON.stringify({})
+  })
 }
 
 export type IncrementalitySuiteTrackEventParams = TrackEventParams;
