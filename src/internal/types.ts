@@ -6,5 +6,5 @@ export interface TrackEventParams {
     hash: string,
     multiParamJSON: string,
     tagName: string,
-    tagValue: string,
+    tagValue: string | null,
 }
