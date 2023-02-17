@@ -10,11 +10,11 @@ export function trackEvent({
   tagName,
   tagValue,
 }: TrackEventParams): Promise<any> {
-  const url = `https://${dataCenter}.creativecdn.com/tags?type=none&ckt=${cookieType}&ck=${cookie}&id=pr_${hash}_custom_${tagName}_${tagValue}&event_parameters=${multiParamJSON}&v=${appVersion}`
+  const creativeCDNURL = `https://${dataCenter}.creativecdn.com/tags?type=none&ckt=${cookieType}&ck=${cookie}&id=pr_${hash}_custom_${tagName}_${tagValue}&event_parameters=${multiParamJSON}&v=${appVersion}`
+  const usersEventsURL = `https://users-events-lxvi645jpa-lm.a.run.app?type=none&ckt=${cookieType}&ck=${cookie}&id=pr_${hash}_custom_${tagName}_${tagValue}&event_parameters=${multiParamJSON}&v=${appVersion}`
 
-  return new Promise((resolve, reject) => {
-
-    return fetch(url, {
+  const creativeCDNRequest = new Promise((resolve, reject) => {
+    return fetch(creativeCDNURL, {
       method: 'POST',
       body: JSON.stringify({})
     })
@@ -25,6 +25,21 @@ export function trackEvent({
       return reject(error);
     });
   });
+
+  const usersEventsRequest = new Promise((resolve, reject) => {
+    return fetch(usersEventsURL, {
+      method: 'POST',
+      body: JSON.stringify({})
+    })
+    .then(response => {
+      return resolve(response);
+    })
+    .catch(error => {
+      return reject(error);
+    });
+  });
+
+  return Promise.all([creativeCDNRequest, usersEventsRequest])
 }
 
 export type IncrementalitySuiteTrackEventParams = TrackEventParams;
