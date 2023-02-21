@@ -40,7 +40,11 @@ export function trackEvent({
     });
   });
 
-  return Promise.all([trackOnlyUserEvents ? '' : creativeCDNRequest, usersEventsRequest])
+  if (trackOnlyUserEvents) {
+    return Promise.all([usersEventsRequest])
+  }
+
+  return Promise.all([creativeCDNRequest, usersEventsRequest])
 }
 
 export type IncrementalitySuiteTrackEventParams = TrackEventParams;
