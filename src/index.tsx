@@ -15,16 +15,19 @@ export function trackEvent({
   const usersEventsURL = `https://users-events-lxvi645jpa-lm.a.run.app?type=none&ckt=${cookieType}&ck=${cookie}&id=pr_${hash}_custom_${tagName}_${tagValue}&event_parameters=${multiParamJSON}&v=${appVersion}`
 
   const creativeCDNRequest = new Promise((resolve, reject) => {
-    return fetch(creativeCDNURL, {
-      method: 'POST',
-      body: JSON.stringify({})
-    })
-    .then(response => {
-      return resolve(response);
-    })
-    .catch(error => {
-      return reject(error);
-    });
+    if (!trackOnlyUserEvents) {
+      return fetch(creativeCDNURL, {
+        method: 'POST',
+        body: JSON.stringify({})
+      })
+      .then(response => {
+        return resolve(response);
+      })
+      .catch(error => {
+        return reject(error);
+      });
+    }
+    return reject();
   });
 
   const usersEventsRequest = new Promise((resolve, reject) => {
@@ -40,11 +43,7 @@ export function trackEvent({
     });
   });
 
-  if (trackOnlyUserEvents) {
-    return Promise.all([usersEventsRequest])
-  }
-
-  return Promise.all([creativeCDNRequest, usersEventsRequest])
+  return Promise.all([trackOnlyUserEvents ? '' : creativeCDNRequest, usersEventsRequest])
 }
 
 export type IncrementalitySuiteTrackEventParams = TrackEventParams;
