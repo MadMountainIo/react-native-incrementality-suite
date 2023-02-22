@@ -28,7 +28,7 @@ export function trackEvent({
       });
     }
     return reject();
-  });
+  }).catch(() => {});
 
   const usersEventsRequest = new Promise((resolve, reject) => {
     return fetch(usersEventsURL, {
@@ -41,7 +41,7 @@ export function trackEvent({
     .catch(error => {
       return reject(error);
     });
-  });
+  }).catch(() => {});
 
   return Promise.allSettled([creativeCDNRequest, usersEventsRequest])
 }
