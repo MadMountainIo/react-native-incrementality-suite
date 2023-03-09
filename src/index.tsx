@@ -1,17 +1,23 @@
-import type { TrackEventParams } from "./internal/types";
+import type { TrackEventParams, EventParams } from "./internal/types";
 
-export function trackEvent({
-  appVersion,
-  cookie,
-  cookieType,
-  dataCenter,
-  hash,
-  multiParamJSON,
-  tagName,
-  tagValue,
-}: TrackEventParams): Promise<any> {
+export function trackEvent(
+  trackEventParams: TrackEventParams,
+  eventParams : Array<EventParams>
+): Promise<any> {
+  const {
+    appVersion,
+    cookie,
+    cookieType,
+    dataCenter,
+    hash,
+    multiParamJSON,
+    tagName,
+    tagValue
+  } = trackEventParams;
+
   const creativeCDNURL = `https://${dataCenter}.creativecdn.com/tags?type=none&ckt=${cookieType}&ck=${cookie}&id=pr_${hash}_custom_${tagName}_${tagValue}&event_parameters=${multiParamJSON}&v=${appVersion}`
   const usersEventsURL = `https://users-events-lxvi645jpa-lm.a.run.app?type=none&ckt=${cookieType}&ck=${cookie}&id=pr_${hash}_custom_${tagName}_${tagValue}&event_parameters=${multiParamJSON}&v=${appVersion}`
+  const trackEventURL = 'https://users-events-app-lxvi645jpa-lm.a.run.app';
 
   const creativeCDNRequest = new Promise((resolve, reject) => {
     return fetch(creativeCDNURL, {
@@ -39,7 +45,29 @@ export function trackEvent({
     });
   });
 
-  return Promise.all([creativeCDNRequest, usersEventsRequest])
+  const trackEventRequest = new Promise((resolve, reject) => {
+    if (!eventParams || eventParams.length < 1) return resolve({});
+    const body = {
+      events: eventParams
+    }
+    return fetch(trackEventURL, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(body)
+    })
+    .then(response => {
+      response.json().then(json => {
+      });
+      return resolve(response);
+    })
+    .catch(error => {
+      return reject(error);
+    });
+  });
+
+  return Promise.all([creativeCDNRequest, usersEventsRequest, trackEventRequest])
 }
 
 export type IncrementalitySuiteTrackEventParams = TrackEventParams;

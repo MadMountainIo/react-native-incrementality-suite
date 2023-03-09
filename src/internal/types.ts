@@ -8,3 +8,19 @@ export interface TrackEventParams {
     tagName: string,
     tagValue: string | null,
 }
+
+export interface EventParams {
+  appId: string
+  time: number
+  advertisingId?: string
+  idfv?: string
+  customId?: string
+  customIdType?: 'clevertap'
+  eventName: string
+  eventValue: string | number | boolean
+  eventParams?: {
+    name: string
+    value: string | number | boolean
+  }[]
+  appVersion: string
+}
