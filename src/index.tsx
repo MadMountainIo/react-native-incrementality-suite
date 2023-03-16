@@ -63,8 +63,6 @@ export function trackEvent(
       body: JSON.stringify(body)
     })
     .then(response => {
-      response.json().then(json => {
-      });
       return resolve(response);
     })
     .catch(error => {
