@@ -7,6 +7,7 @@ export interface TrackEventParams {
     multiParamJSON: string,
     tagName: string,
     tagValue: string | null,
+    trackOnlyUserEvents?: boolean;
 }
 
 export interface EventParams {
