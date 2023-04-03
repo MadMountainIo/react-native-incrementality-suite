@@ -8,9 +8,9 @@ interface RequestEvent {
     value: string;
   };
   eventName: string;
-  eventValue: string | number | boolean | null;
+  eventValue?: string | number | boolean | null;
   eventParams?: EventParam[];
-  appVersion: string;
+  appVersion?: string;
 }
 
 interface RequestBody {
@@ -19,7 +19,7 @@ interface RequestBody {
 
 export interface EventParam {
   name: string;
-  value: string | number | boolean | null;
+  value: string | number | boolean | null | undefined;
 }
 
 export type Event = Omit<RequestEvent, 'time'>;
