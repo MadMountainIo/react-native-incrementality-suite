@@ -35,7 +35,7 @@ export function createEvent(data: Event): RequestEvent {
  * Send events to Incrementality Suite backend
  */
 export function trackEvents(events: RequestEvent[]): Promise<Response> {
-  const apiUrl = 'https://users-events-apps-lxvi645jpa-lm.a.run.app'
+  const apiUrl = 'https://europe-central2-incrementality-suite.cloudfunctions.net/users-events-apps'
   const body: RequestBody = {
     events,
   };
